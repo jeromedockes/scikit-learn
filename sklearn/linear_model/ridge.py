@@ -1120,7 +1120,7 @@ def _centered_gram(X):
 class _WIPNewRidgeGCV(_RidgeGCV):
 
     def _pre_compute(self, X, y, centered_kernel):
-        if sparse.issparse(X):
+        if sparse.issparse(X) and self.fit_intercept:
             return self._pre_compute_gram(X, y)
         return super()._pre_compute(X, y, centered_kernel)
 
