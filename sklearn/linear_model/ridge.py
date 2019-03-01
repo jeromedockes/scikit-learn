@@ -1151,6 +1151,16 @@ class _WIPNewRidgeGCV(_RidgeGCV):
             G_diag = G_diag[:, np.newaxis]
         return G_diag, c
 
+    def fit(self, X, y, sample_weight=None):
+        if (sparse.issparse(X) and (
+                X.shape[0] > X.shape[1]) and self.fit_intercept):
+            warnings.warn(
+                'Cannot use an SVD of X if X is sparse '
+                'and fit_intercept is true. will therefore set '
+                'gcv_mode to "eigen", which can cause performance issues '
+                'if n_samples is much larger than n_features')
+        super().fit(X, y, sample_weight=sample_weight)
+
 
 class _BaseRidgeCV(LinearModel, MultiOutputMixin):
     def __init__(self, alphas=(0.1, 1.0, 10.0),
